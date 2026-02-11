@@ -1,0 +1,46 @@
+{% extends 'base2.html' %}
+{% load static %}
+
+{% block content %}
+<div class="form-container2">
+    <h2 class="text-center" style="color:#8b5f9e">Book Vaccination</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="row">
+            <div class="form-group col-md-12 mt-3">
+                <label for="name">Child Name</label>
+                <input type="text" id="child_name" name="child_name" required>
+            </div>
+            <div class="form-group col-md-12 mt-3">
+                <label for="name">Child Age</label>
+                <input type="text" id="child_age" name="child_age" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label for="vaccination">Vaccination</label>
+                <select id="vaccination" name="vaccination" class="form-control" required>
+                    <option value="" disabled selected>Select a Vaccination</option>
+                    {% for vaccine in vaccination %}
+                        <option value="{{ vaccine.id }}">{{ vaccine.vaccine_name }} - {{ vaccine.age_group }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group col-md-12">
+                <label for="phone">appointment_date</label>
+                <input type="date" id="appointment_date" name="appointment_date" required>
+            </div>
+        </div>
+
+        <button type="submit" class="btn">Submit</button>
+    </form>
+</div>
+<script>
+    // Get today's date in YYYY-MM-DD format
+    var today = new Date().toISOString().split('T')[0];
+  
+    // Set the min attribute to today's date
+    document.getElementById("appointment_date").setAttribute("min", today);
+</script>
+{% endblock content %}

@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Dancing+Script&family=Poppins&family=Playfair+Display&family=Raleway&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <h1 class="header-title">
+                <a href="{% url 'home' %}" style="text-decoration: none; color: inherit;">
+                    Nurture Nexus
+                </a>
+            </h1>            
+            <div class="auth-buttons">
+                {% if request.user.is_superuser %}
+                    <a class="btn small-btn" href="{% url 'diet_plan' %}">Diet Plan</a>
+                    <a class="btn small-btn" href="{% url 'postnatal_care_tips' %}">Postnatal Care Tips</a>
+                    <a class="btn small-btn" href="{% url 'fitness_exercises' %}">Fitness Exercises</a>
+                    <a class="btn small-btn" href="{% url 'food_recipe' %}">Food Recipe </a>
+                    <a class="btn small-btn" href="{% url 'emergency_preparedness' %}">Emergency Preparedness</a>
+                    <a class="btn small-btn" href="{% url 'emergency_preparedness' %}">Stories</a>
+                    <a class="btn small-btn" href="{% url 'diy_tutorial' %}">Diy Tutorials</a>
+                    <a class="btn small-btn" href="{% url 'vaccination' %}">Vaccination</a>
+                    <a class="btn small-btn" href="{% url 'signout' %}">Logout</a>
+                {% elif request.user.is_authenticated and user.role == "parent" %}
+                    <a class="btn small-btn" href="{% url 'selection' %}">Welcome Page</a>
+                    <a class="btn small-btn" href="{% url 'search' %}">Search</a>
+                    <a class="btn small-btn" href="{% url 'diet_plan' %}">Diet Plan</a>
+                    <a class="btn small-btn" href="{% url 'food_recipe' %}">Food Recipe </a>
+                    <a class="btn small-btn" href="{% url 'stories' %}">Stories</a>
+                    <a class="btn small-btn" href="{% url 'diy_tutorial' %}">Diy Tutorials</a>
+                    <a class="btn small-btn" href="{% url 'profile' %}">Profile</a>
+                    <a class="btn small-btn" href="{% url 'signout' %}">Logout</a>
+                {% elif request.user.is_authenticated and user.role == "Therapist" or user.role == "Pediatrician" %}
+                    <a class="btn small-btn" href="{% url 'chat' %}">Q&A</a>
+                    <a class="btn small-btn" href="{% url 'profile' %}">Profile</a>
+                    <a class="btn small-btn" href="{% url 'signout' %}">Logout</a>
+
+                {% else %}
+                    <a class="btn small-btn" href="{% url 'login' %}">Login</a>
+                    <div class="dropdown">
+                        <button class="btn small-btn dropdown-btn" id="registerBtn">Register ▼</button>
+                        <div class="dropdown-menu">
+                            <a href="{% url 'parent_register' %}" class="dropdown-item">Parent</a>
+                            <a href="{% url 'register' %}?role=Pediatrician" class="dropdown-item">Pediatrician</a>
+                            <a href="{% url 'register' %}?role=Therapist" class="dropdown-item">Therapist</a>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+<div class="container-fluid">
+    <h2 class="text-center mt-3 mb-4" style="color:#8b5f9e">Feeding Schedule</h2>
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10">
+            {% if request.user.is_superuser %}
+            <a href="{% url 'add_diet_plan' %}" class="btn btn-sm mb-3">Add Diet Plan</a>
+            {% endif %}
+            <table class="table table-striped">
+                <thead class="txt" >
+                    <tr>
+                        <th>Age (Months)</th>
+                        <th>Feeding Type</th>
+                        <th>Frequency per Day</th>
+                        <th>Quantity per Feed (ml)</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in result %}
+                    <tr>
+                        <td>{{i.age_months}}</td>
+                        <td>{{i.feeding_type}}</td>
+                        <td>{{i.frequency_per_day}}</td>
+                        <td>{{i.quantity_per_feed_ml}}</td>
+                        <td>{{i.Notes}}</td>
+                    </tr>
+                    {% endfor %}
+                   
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2025 Our Platform. All rights reserved.</p>
+</footer>
+</body>
+</html>

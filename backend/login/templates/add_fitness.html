@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="form-container2">
+    <h2 class="text-center" style="color:#8b5f9e">Add Fitness Exercise</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="row">
+            <div class="form-group col-md-12 mt-3">
+                <label for="name">Exercise Name</label>
+                <input type="text" id="exercise_name" name="exercise_name" required>
+            </div>
+            <div class="form-group col-md-12 mt-3">
+                <label for="name">Description</label>
+                <input type="text" id="description" name="description" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label for="email">Instructions</label>
+                <input type="text" id="instructions" name="instructions" required>
+            </div>
+            <div class="form-group col-md-12">
+                <label for="phone">Duration Reps</label>
+                <input type="text" id="duration_reps" name="duration_reps" required>
+            </div>
+        </div>
+
+        <button type="submit" class="btn">Submit</button>
+    </form>
+</div>
+{% endblock content %}

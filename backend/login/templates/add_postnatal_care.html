@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="form-container2">
+    <h2 class="text-center" style="color:#8b5f9e">Add Postnatal Care Tips</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="row">
+            <div class="form-group col-md-12 mt-3">
+                <label for="name">Category</label>
+                <input type="text" id="category" name="category" required>
+            </div>
+            
+        </div>
+        <div class="row">
+            <div class="form-group col-md-12 mt-3">
+                <label for="name">Tip Number </label>
+                <input type="number" id="tip_number" name="tip_number" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label for="email">Tips</label>
+                <input type="text" id="tips" name="tips" required>
+            </div>
+        </div>
+
+        <button type="submit" class="btn">Submit</button>
+    </form>
+</div>
+{% endblock content %}

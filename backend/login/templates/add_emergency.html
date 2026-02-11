@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="form-container2">
+    <h2 class="text-center" style="color:#8b5f9e">Add Fitness Exercise</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="row">
+            <div class="form-group col-md-12 mt-3">
+                <label for="name">Emergency Type</label>
+                <input type="text" id="Emergency_type" name="Emergency_type" required>
+            </div>
+            <div class="form-group col-md-12 mt-3">
+                <label for="name">Symptoms</label>
+                <input type="text" id="symptoms" name="symptoms" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label for="email">Immediate Action</label>
+                <input type="text" id="immediate_action" name="immediate_action" required>
+            </div>
+        </div>
+
+        <button type="submit" class="btn">Submit</button>
+    </form>
+</div>
+{% endblock content %}

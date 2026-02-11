@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="form-container2">
+    <h2 class="text-center" style="color:#8b5f9e">Add Diet Plan </h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="row">
+            <div class="form-group col-md-6 mt-3">
+                <label for="name">Age (months)</label>
+                <input type="text" id="age_months" name="age_months" required>
+            </div>
+            <div class="form-group col-md-6 mt-3">
+                <label for="name">Feeding Type</label>
+                <input type="text" id="feeding" name="feeding" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label for="email">Frequency/Day</label>
+                <input type="text" id="frequency" name="frequency" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="phone">Quantity/Feed (ml)</label>
+                <input type="text" id="quantity" name="quantity" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label for="password">Notes</label>
+                <input type="text" id="notes" name="notes" required >
+            </div>
+        </div>
+
+        <button type="submit" class="btn">Submit</button>
+    </form>
+</div>
+{% endblock content %}

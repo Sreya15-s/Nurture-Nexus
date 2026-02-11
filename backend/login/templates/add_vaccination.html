@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="form-container2">
+    <h2 class="text-center" style="color:#8b5f9e">Add Vaccination Schedule</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="row">
+            <div class="form-group col-md-12 mt-3">
+                <label for="name">Age Group</label>
+                <input type="text" id="age_group" name="age_group" required>
+            </div>
+            <div class="form-group col-md-12 mt-3">
+                <label for="name">Vaccination Name</label>
+                <input type="text" id="vaccine_name" name="vaccine_name" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label for="email">Dose Number</label>
+                <input type="text" id="dose_number" name="dose_number" required>
+            </div>
+            <div class="form-group col-md-12">
+                <label for="phone">Protection Offered</label>
+                <input type="text" id="description" name="description" required>
+            </div>
+        </div>
+
+        <button type="submit" class="btn">Submit</button>
+    </form>
+</div>
+{% endblock content %}

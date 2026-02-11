@@ -1,0 +1,62 @@
+{% extends 'base2.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid">
+    <h2 class="text-center mt-3 mb-4" style="color:#8b5f9e">Postnatal Care Tips</h2>
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10">
+            {% if request.user.is_superuser %}
+            <a href="{% url 'add_postnatal_care' %}" class="btn btn-sm mb-3">Add Postnatal Care Tips</a>
+            {% endif %}
+            <table class="table table-striped">
+                <thead class="txt" >
+                    <tr>
+                        <th>Category</th>
+                        <th>Tip Number</th>
+                        <th>Tips</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in result %}
+                    <tr>
+                        <td>{{i.category}}</td>
+                        <td>{{i.tip_number}}</td>
+                        <td>{{i.Tips}}</td>
+                    </tr>
+                    {% endfor %}
+                    {% comment %} <tr>
+                        <td>1-3</td>
+                        <td>Breastfeeding / Formula</td>
+                        <td>6-8</td>
+                        <td>90-120</td>
+                        <td>Start longer intervals between feeds.</td>
+                    </tr>
+                    <tr>
+                        <td>4-6</td>
+                        <td>Breastfeeding / Formula + Solid Foods</td>
+                        <td>5-6</td>
+                        <td>120-180</td>
+                        <td>Introduce pureed vegetables/fruits.</td>
+                    </tr>
+                    <tr>
+                        <td>7-9</td>
+                        <td>Breastfeeding / Formula + Solids</td>
+                        <td>4-5</td>
+                        <td>180-240</td>
+                        <td>Start finger foods.</td>
+                    </tr>
+                    <tr>
+                        <td>10-12</td>
+                        <td>Breastfeeding / Formula + Solids</td>
+                        <td>3-4</td>
+                        <td>240</td>
+                        <td>Encourage self-feeding.</td>
+                    </tr> {% endcomment %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock content %}

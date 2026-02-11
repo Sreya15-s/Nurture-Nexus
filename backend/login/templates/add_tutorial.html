@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="form-container2">
+    <h2 class="text-center" style="color:#8b5f9e">Add DIY Tutorials</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="row">
+            <div class="form-group col-md-12 mt-3">
+                <label for="name">Title</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+            <div class="form-group col-md-12 mt-3">
+                <label for="name">Select The Video</label>
+                <input type="file" id="video" name="video" required>
+            </div>
+        </div>
+        
+
+        <button type="submit" class="btn">Submit</button>
+    </form>
+</div>
+{% endblock content %}

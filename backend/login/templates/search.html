@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid">
+    <h2 class="text-center">Search Nearby Schools & Parks</h2>
+
+    <!-- Search Input -->
+    <div class="text-center my-3">
+        <input type="text" id="searchInput" class="form-control d-inline-block w-50" placeholder="Enter location">
+        <button class="btn btn-primary" onclick="searchLocation()">Search</button>
+    </div>
+
+    <!-- Map Container -->
+    <div id="map" style="height: 650px; width: 100%;"></div>
+</div>
+
+<!-- Leaflet.js -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+    var map = L.map('map').setView([9.9816, 76.2999], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    var userMarker = L.marker([9.9816, 76.2999]).addTo(map)
+        .bindPopup("Default Location").openPopup();
+
+    // Define custom icons
+    var schoolIcon = L.icon({
+        iconUrl: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png', // Red for schools
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32]
+    });
+
+    var parkIcon = L.icon({
+        iconUrl: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png', // Green for parks
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32]
+    });
+
+    function searchLocation() {
+        var query = document.getElementById("searchInput").value;
+        if (!query) {
+            alert("Please enter a location to search.");
+            return;
+        }
+
+        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.length === 0) {
+                alert("Location not found.");
+                return;
+            }
+
+            var lat = parseFloat(data[0].lat);
+            var lon = parseFloat(data[0].lon);
+
+            map.setView([lat, lon], 14);
+            userMarker.setLatLng([lat, lon]).bindPopup(query).openPopup();
+
+            fetchNearbyPlaces(lat, lon);
+        })
+        .catch(error => console.error("Error fetching location:", error));
+    }
+
+    function fetchNearbyPlaces(lat, lon) {
+        var overpassQuery = `[out:json];
+            (
+                node["amenity"="school"](around:5000, ${lat}, ${lon});
+                way["amenity"="school"](around:5000, ${lat}, ${lon});
+                relation["amenity"="school"](around:5000, ${lat}, ${lon});
+                node["leisure"="park"](around:5000, ${lat}, ${lon});
+                way["leisure"="park"](around:5000, ${lat}, ${lon});
+                relation["leisure"="park"](around:5000, ${lat}, ${lon});
+            );
+            out center;`;
+
+        var overpassUrl = "https://overpass-api.de/api/interpreter?data=" + encodeURIComponent(overpassQuery);
+
+        fetch(overpassUrl)
+        .then(response => response.json())
+        .then(data => {
+            if (!data.elements || data.elements.length === 0) {
+                alert("No schools or parks found within 5km.");
+                return;
+            }
+
+            data.elements.forEach(element => {
+                var placeLat = element.lat || element.center.lat;
+                var placeLon = element.lon || element.center.lon;
+                var placeName = element.tags.name || "Unnamed Place";
+                var placeType = element.tags.amenity === "school" ? "School" : "Park";
+                var iconType = placeType === "School" ? schoolIcon : parkIcon;
+
+                L.marker([placeLat, placeLon], { icon: iconType }).addTo(map)
+                    .bindPopup(`${placeName} (${placeType})`);
+            });
+        })
+        .catch(error => console.error("Error fetching places:", error));
+    }
+</script>
+
+{% endblock content %}
